@@ -11,7 +11,7 @@ class Canvas:
         for row in self._canvas:
             for col in row:
                 print(col, end="   ")
-            print()
+            print(end="\n\n")
 
     def set_item(self,  x, y, ch='.'):
         self._canvas[x][y] = ch
@@ -40,7 +40,8 @@ class Scribe:
                 self._canvas.set_item(x_idx, y_idx, y)
                 self._canvas.draw()
 
-                time.sleep(1)
+                if y != ' ':
+                    time.sleep(1)
 
     def right(self, steps: int = 1):
         self._cursor_x += steps
