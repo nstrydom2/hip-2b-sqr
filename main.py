@@ -5,21 +5,17 @@
 from scribe import Scribe
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     shape = [
         ['.', '.', '.'],
-        ['.', ' ', '.'],
+        ['.', '', '.'],
         ['.', '.', '.'],
     ]
 
-    scribe = Scribe()
+    scribe = Scribe(20, 20)
+    #scribe.draw_stairs(6)
+    #scribe.draw_square(5, 5)
+    #scribe.draw_shape(shape)
     scribe.draw_shape(shape)
-    #scribe.draw_square(3,3)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
