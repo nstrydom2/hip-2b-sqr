@@ -33,7 +33,7 @@ class Scribe:
     def __init__(self, canvas_x=2, canvas_y=2):
         self.trail = '.'
         self.mark = '*'
-        self.framerate = 0.2
+        self.framerate = 0.21
         self.pos = [0, 0]
         self._canvas = Canvas(x=canvas_x, y=canvas_y)
 
