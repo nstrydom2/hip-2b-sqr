@@ -29,7 +29,7 @@ class Canvas:
 
 class Scribe:
     _canvas: Canvas
-    _direction: str
+    _direction: int
 
     def __init__(self, canvas_x=2, canvas_y=2):
         self.trail = '.'
@@ -37,7 +37,7 @@ class Scribe:
         self.framerate = 0.21
         self.pos = [0, 0]
         self._canvas = Canvas(x=canvas_x, y=canvas_y)
-        self._direction = 'e'
+        self._direction = 90
 
     def draw_square(self, w, l):
         for _ in range(w):
@@ -73,41 +73,41 @@ class Scribe:
             self.up()
 
     def right(self, steps: int = 1):
-        self._direction = 'e'
+        self._direction = 90
 
         pos = [self.pos[0]+steps, self.pos[1]]
         if not self._canvas.hits_wall(self.pos):
             self.draw(pos)
 
     def left(self, steps: int = 1):
-        self._direction = 'w'
+        self._direction = 270
 
         pos = [self.pos[0]-steps, self.pos[1]]
         if not self._canvas.hits_wall(self.pos):
             self.draw(pos)
 
     def up(self, steps: int = 1):
-        self._direction = 'n'
+        self._direction = 0
 
         pos = [self.pos[0], self.pos[1]-steps]
         if not self._canvas.hits_wall(self.pos):
             self.draw(pos)
 
     def down(self, steps: int = 1):
-        self._direction = 's'
+        self._direction = 180
 
         pos = [self.pos[0], self.pos[1]+steps]
         if not self._canvas.hits_wall(self.pos):
             self.draw(pos)
 
     def forward(self):
-        if self._direction == 'e':
+        if self._direction == 90:
             self.right()
-        elif self._direction == 'n':
+        elif self._direction == 0:
             self.up()
-        elif self._direction == 's':
+        elif self._direction == 180:
             self.down()
-        elif self._direction == 'w':
+        elif self._direction == 270:
             self.left()
 
     def draw(self, pos):
