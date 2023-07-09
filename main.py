@@ -13,7 +13,7 @@ if __name__ == '__main__':
         ['.', '.', '.'],
     ]
 
-    scribe = Scribe(30, 30)
+    scribe = Scribe(canvas_dims=(30, 30))
     #scribe.draw_stairs(6)
     scribe.draw_square(20, 20)
     #scribe.draw_shape(shape)

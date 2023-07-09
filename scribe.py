@@ -7,9 +7,8 @@ class Canvas:
     _y: int
     _canvas: list
 
-    def __init__(self, x, y):
-        self._x = x
-        self._y = y
+    def __init__(self, window_dims):
+        self._x, self._y = window_dims
         self._canvas = [[' ' for _ in range(self._y)] for _ in range(self._x)]
 
     def hits_wall(self, point):
@@ -31,12 +30,12 @@ class Scribe:
     _canvas: Canvas
     _direction: int
 
-    def __init__(self, canvas_x=2, canvas_y=2):
+    def __init__(self, canvas_dims=(4, 4)):
         self.trail = '.'
         self.mark = '*'
         self.framerate = 0.21
         self.pos = [0, 0]
-        self._canvas = Canvas(x=canvas_x, y=canvas_y)
+        self._canvas = Canvas(window_dims=canvas_dims)
         self._direction = 90
 
     def draw_square(self, w, l):
