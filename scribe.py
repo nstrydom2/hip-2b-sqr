@@ -31,12 +31,14 @@ class Canvas:
 class Scribe:
     _canvas: Canvas
 
-    def __init__(self, canvas_dims=(4, 4)):
+    def __init__(self, canvas_dims=(4, 4), start_pos=[0, 0]):
+        if start_pos is None:
+            start_pos = [0, 0]
         self.trail = '.'
         self.mark = '*'
         self.framerate = 0.21
         self._canvas = Canvas(window_dims=canvas_dims)
-        self._pos = [0, 0]
+        self._pos = start_pos
 
         self._direction = [0, 1]
 
