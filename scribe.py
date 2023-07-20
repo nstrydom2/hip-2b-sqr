@@ -1,19 +1,20 @@
 import os
 import time
 
+from typing import List
+
 
 class Canvas:
     _x: int
     _y: int
     _canvas: list
 
-    def __init__(self, x, y):
-        self._x = x
-        self._y = y
+    def __init__(self, window_dims):
+        self._x, self._y = window_dims
         self._canvas = [[' ' for _ in range(self._y)] for _ in range(self._x)]
 
     def hits_wall(self, point):
-        return point[0] < 0 or point[0] >= self._x or point[1] < 0 or point[1] >= self._y
+        return round(point[0]) < 0 or round(point[0]) >= self._x or round(point[1]) < 0 or round(point[1]) >= self._y
 
     def print(self):
         self.refresh()
@@ -21,7 +22,7 @@ class Canvas:
             print(' '.join([col[y] for col in self._canvas]))
 
     def set_item(self,  x, y, ch='.'):
-        self._canvas[x][y] = ch
+        self._canvas[round(x)][round(y)] = ch
 
     def refresh(self):
         os.system('cls')
@@ -29,15 +30,17 @@ class Canvas:
 
 class Scribe:
     _canvas: Canvas
-    _direction: int
 
-    def __init__(self, canvas_x=2, canvas_y=2):
+    def __init__(self, canvas_dims=(4, 4), start_pos=[0, 0]):
+        if start_pos is None:
+            start_pos = [0, 0]
         self.trail = '.'
         self.mark = '*'
         self.framerate = 0.21
-        self.pos = [0, 0]
-        self._canvas = Canvas(x=canvas_x, y=canvas_y)
-        self._direction = 90
+        self._canvas = Canvas(window_dims=canvas_dims)
+        self._pos = start_pos
+
+        self._direction = [0, 1]
 
     def draw_square(self, w, l):
         for _ in range(w):
@@ -66,53 +69,44 @@ class Scribe:
             self.down()
             self.down()
 
-        while self.pos[0] > 0:
+        while self._pos[0] > 0:
             self.left()
 
-        while self.pos[1] > 1:
+        while self._pos[1] > 1:
             self.up()
+
+    def bounce(self, pos):
+        reflection = self.canvas.getReflection(pos)
+        self.direction = [self.direction[0] * reflection[0], self.direction[1] * reflection[1]]
+
+    def set_direction(self, degrees):
+        radians = (degrees / 180) * math.pi
+        self._direction = [math.sin(radians), -math.cos(radians)]
 
     def right(self, steps: int = 1):
-        self._direction = 90
-
-        pos = [self.pos[0]+steps, self.pos[1]]
-        if not self._canvas.hits_wall(self.pos):
-            self.draw(pos)
+        self._direction = [1, 0]
+        self.forward()
 
     def left(self, steps: int = 1):
-        self._direction = 270
-
-        pos = [self.pos[0]-steps, self.pos[1]]
-        if not self._canvas.hits_wall(self.pos):
-            self.draw(pos)
+        self._direction = [-1, 0]
+        self.forward()
 
     def up(self, steps: int = 1):
-        self._direction = 0
-
-        pos = [self.pos[0], self.pos[1]-steps]
-        if not self._canvas.hits_wall(self.pos):
-            self.draw(pos)
+        self._direction = [0, -1]
+        self.forward()
 
     def down(self, steps: int = 1):
-        self._direction = 180
-
-        pos = [self.pos[0], self.pos[1]+steps]
-        if not self._canvas.hits_wall(self.pos):
-            self.draw(pos)
+        self._direction = [0, 1]
+        self.forward()
 
     def forward(self):
-        if self._direction == 90:
-            self.right()
-        elif self._direction == 0:
-            self.up()
-        elif self._direction == 180:
-            self.down()
-        elif self._direction == 270:
-            self.left()
+        pos = [self._pos[0] + self._direction[0], self._pos[1] + self._direction[1]]
+        if not self._canvas.hits_wall(pos):
+            self.draw(pos)
 
     def draw(self, pos):
-        self._canvas.set_item(self.pos[0], self.pos[1], self.trail)
-        self.pos = pos
-        self._canvas.set_item(self.pos[0], self.pos[1], self.mark)
+        self._canvas.set_item(self._pos[0], self._pos[1], self.trail)
+        self._pos = pos
+        self._canvas.set_item(self._pos[0], self._pos[1], self.mark)
         self._canvas.print()
         time.sleep(self.framerate)
