@@ -75,7 +75,11 @@ class Scribe:
         while self._pos[1] > 1:
             self.up()
 
-    def direction_deg(self, degrees):
+    def bounce(self, pos):
+        reflection = self.canvas.getReflection(pos)
+        self.direction = [self.direction[0] * reflection[0], self.direction[1] * reflection[1]]
+
+    def set_direction(self, degrees):
         radians = (degrees / 180) * math.pi
         self._direction = [math.sin(radians), -math.cos(radians)]
 
